@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>{% block title %}{{ site_content.title if site_content else 'Capital High School Debate System' }}{% endblock %}</title>
 
     <!-- Bootstrap CSS -->
@@ -11,23 +11,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
-    <!-- Club Theme CSS -->
     <link href="{{ url_for('static', filename='club-theme.css') }}" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- NAVIGATION BAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('index') }}">
                 <i class="bi bi-trophy"></i>
                 {{ site_content.club_name if site_content and site_content.club_name else 'Debate Club' }}
             </a>
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- MAIN NAV LINKS -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('index') }}">
@@ -70,6 +69,7 @@
                     {% endif %}
                 </ul>
 
+                <!-- USER NAV DROPDOWNS -->
                 <ul class="navbar-nav">
                     {% if is_logged_in %}
                         {% if is_admin %}
@@ -78,9 +78,11 @@
                                 <i class="bi bi-star"></i> Team Leader
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ url_for('admin') }}">Admin Dashboard</a></li>
-                                    <i class="bi bi-speedometer2"></i> Control Panel
-                                </a></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('admin') }}">
+                                        <i class="bi bi-speedometer2"></i> Admin Dashboard
+                                    </a>
+                                </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{{ url_for('create_match_layout_route') }}">
                                     <i class="bi bi-diagram-3"></i> Create Match Layout
@@ -145,7 +147,7 @@
         </div>
     </nav>
 
-    <!-- Flash Messages -->
+    <!-- FLASH MESSAGES -->
     <div class="container mt-3">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -159,12 +161,12 @@
         {% endwith %}
     </div>
 
-    <!-- Main Content -->
+    <!-- PAGE CONTENT -->
     <main class="container my-4">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="bg-dark text-light py-4 mt-5">
         <div class="container">
             <div class="row">
@@ -180,7 +182,7 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     {% block scripts %}{% endblock %}
 </body>
