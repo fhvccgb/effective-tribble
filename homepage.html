@@ -13,10 +13,12 @@
                     </h1>
                     <p class="club-motto">{{ site_content.team_motto if site_content else 'Speak Truth, Seek Victory' }}</p>
                 </div>
-                <p class="card-text lead text-center">{{ site_content.welcome_message if site_content else 'Welcome to our debate club!' }}</p>
-                
+                <p class="card-text lead text-center">
+                    {{ site_content.welcome_message if site_content else 'Welcome to our debate club!' }}
+                </p>
+
                 {% if not is_logged_in %}
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 justify-content-center">
                     <a href="{{ url_for('register') }}" class="btn btn-primary">
                         <i class="bi bi-person-plus"></i> Join Our Team
                     </a>
@@ -63,7 +65,7 @@
 
     <div class="col-lg-4">
         <!-- Fun Facts -->
-        {% if data.get('feature_toggles', {}).get('fun_facts_enabled', true) and data.get('fun_content', {}).get('fun_facts') %}
+        {% if data.get('feature_toggles', {}).get('fun_facts_enabled', True) and data.get('fun_content', {}).get('fun_facts') %}
         <div class="card mb-4">
             <div class="card-header">
                 <h5 class="mb-0">
@@ -94,7 +96,7 @@
         {% endif %}
 
         <!-- Club Achievements -->
-        {% if data.get('feature_toggles', {}).get('achievements_enabled', true) and data.get('fun_content', {}).get('club_achievements') %}
+        {% if data.get('feature_toggles', {}).get('achievements_enabled', True) and data.get('fun_content', {}).get('club_achievements') %}
         <div class="card mb-4">
             <div class="card-header">
                 <h5 class="mb-0">
@@ -124,6 +126,9 @@
             </div>
             <div class="card-body">
                 <div class="d-grid gap-2">
+                    <a href="{{ url_for('admin') }}" class="btn btn-danger btn-sm">
+                        <i class="bi bi-tools"></i> Admin Panel
+                    </a>
                     <a href="{{ url_for('add_player') }}" class="btn btn-outline-primary btn-sm">
                         <i class="bi bi-person-plus"></i> Add Player
                     </a>
@@ -150,7 +155,7 @@
             </div>
             <div class="card-body">
                 <div class="d-grid gap-2">
-                    {% if settings and settings.forum_enabled %}
+                    {% if data.get('settings', {}).get('forum_enabled', True) %}
                     <a href="{{ url_for('forum') }}" class="btn btn-outline-secondary btn-sm">
                         <i class="bi bi-chat-dots"></i> Discussion Forum
                     </a>
