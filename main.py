@@ -725,33 +725,39 @@ def add_team():
 
 @app.route('/record_match', methods=['GET', 'POST', 'HEAD'])
 def record_match():
-    """Record a match result - Admin only"""
     if not requires_admin():
         flash('Admin access required!', 'error')
         return redirect(url_for('login'))
+
     data = load_data()
+
     if request.method == 'POST':
-        match_type = request.form.get('format')
+        match_type = request.form['match_type']
+
         if match_type == 'LD':
             winner = request.form['winner']
             loser = request.form['loser']
 
             if winner not in data['players'] or loser not in data['players']:
                 flash('One or more players not found!', 'error')
-                return render_template('record_match.html', data=data)
+                return redirect(url_for('record_match'))
 
             if winner == loser:
                 flash('A player cannot compete against themselves!', 'error')
-                return render_template('record_match.html', data=data)
+                return redirect(url_for('record_match'))
+
+            # Update elo
             winner_old_elo = data['players'][winner]['elo']
             loser_old_elo = data['players'][loser]['elo']
             new_winner_elo, new_loser_elo = update_elo_ratings(winner_old_elo, loser_old_elo)
+
             data['players'][winner]['elo'] = new_winner_elo
             data['players'][loser]['elo'] = new_loser_elo
             data['players'][winner]['matches_won'] += 1
             data['players'][loser]['matches_lost'] += 1
             data['players'][winner]['total_matches'] += 1
             data['players'][loser]['total_matches'] += 1
+
             match_record = {
                 'type': 'LD',
                 'winner': winner,
@@ -761,32 +767,38 @@ def record_match():
                 'loser_elo_change': new_loser_elo - loser_old_elo,
                 'date': datetime.now().isoformat()
             }
+
         else:  # PF
             winning_team = request.form['winning_team']
             losing_team = request.form['losing_team']
 
             if winning_team not in data['teams'] or losing_team not in data['teams']:
                 flash('One or more teams not found!', 'error')
-                return render_template('record_match.html', data=data)
+                return redirect(url_for('record_match'))
 
             if winning_team == losing_team:
                 flash('A team cannot compete against itself!', 'error')
-                return render_template('record_match.html', data=data)
+                return redirect(url_for('record_match'))
+
             winner_old_elo = data['teams'][winning_team]['elo']
             loser_old_elo = data['teams'][losing_team]['elo']
             new_winner_elo, new_loser_elo = update_elo_ratings(winner_old_elo, loser_old_elo)
+
             data['teams'][winning_team]['elo'] = new_winner_elo
             data['teams'][losing_team]['elo'] = new_loser_elo
             data['teams'][winning_team]['matches_won'] += 1
             data['teams'][losing_team]['matches_lost'] += 1
             data['teams'][winning_team]['total_matches'] += 1
             data['teams'][losing_team]['total_matches'] += 1
+
             for member in data['teams'][winning_team]['members']:
                 data['players'][member]['matches_won'] += 1
                 data['players'][member]['total_matches'] += 1
+
             for member in data['teams'][losing_team]['members']:
                 data['players'][member]['matches_lost'] += 1
                 data['players'][member]['total_matches'] += 1
+
             match_record = {
                 'type': 'PF',
                 'winning_team': winning_team,
@@ -796,11 +808,15 @@ def record_match():
                 'loser_elo_change': new_loser_elo - loser_old_elo,
                 'date': datetime.now().isoformat()
             }
+
         data['matches'].append(match_record)
         save_data(data)
         flash('Match recorded successfully!', 'success')
         return redirect(url_for('index'))
-    return render_template('record_match.html',
+
+    # GET request
+    return render_template(
+        'record_match.html',
         data=data,
         teams=data.get('teams', {}),
         players=data.get('players', {}),
