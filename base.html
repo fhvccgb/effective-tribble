@@ -43,7 +43,7 @@
                             <i class="bi bi-person"></i> Solo Debates
                         </a>
                     </li>
-                    {% if settings and settings.forum_enabled %}
+                    {% if settings and settings.get('forum_enabled', True) %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('forum') }}">
                             <i class="bi bi-chat-dots"></i> Discussion
@@ -60,7 +60,7 @@
                             <i class="bi bi-clipboard-check"></i> Judge Guidelines
                         </a>
                     </li>
-                    {% if data and data.feature_toggles.get('ai_practice_enabled', True) %}
+                    {% if data.get('feature_toggles', {}).get('ai_practice_enabled', True) %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('ai_practice') }}">
                             <i class="bi bi-robot"></i> AI Practice
