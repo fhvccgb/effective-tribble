@@ -731,7 +731,7 @@ def record_match():
         return redirect(url_for('login'))
     data = load_data()
     if request.method == 'POST':
-        match_type = request.form['match_type']
+        match_type = request.form.get('format')
         if match_type == 'LD':
             winner = request.form['winner']
             loser = request.form['loser']
