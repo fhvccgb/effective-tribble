@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}Practice Result - {{ super() }}{% endblock %}
@@ -9,38 +8,37 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="mb-0">
-                    <i class="bi bi-chat-square-dots"></i>
-                    Debate Practice Session
+                    <i class="bi bi-chat-square-dots"></i> Debate Practice Session
                 </h3>
-                <small class="text-muted">{{ session.format }} Format - {{ session.date[:19].replace('T', ' ') }}</small>
+                <small class="text-muted">
+                    {{ session.format }} Format · 
+                    {{ session.date[:19].replace('T', ' ') }}
+                    {% if session.difficulty %}
+                    · {{ session.difficulty|capitalize }} Difficulty
+                    {% endif %}
+                </small>
             </div>
             <div class="card-body">
-                <div class="alert alert-info" role="alert">
+                <div class="alert alert-info">
                     <strong>Topic:</strong> {{ session.topic }}
                 </div>
-                
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card border-primary">
                             <div class="card-header bg-primary text-white">
-                                <h5 class="mb-0">
-                                    <i class="bi bi-person-fill"></i>
-                                    Your Argument ({{ session.user_position }})
-                                </h5>
+                                <h5 class="mb-0"><i class="bi bi-person-fill"></i> Your Argument ({{ session.user_position }})</h5>
                             </div>
                             <div class="card-body">
                                 <p style="white-space: pre-line;">{{ session.user_argument }}</p>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-6">
                         <div class="card border-warning">
                             <div class="card-header bg-warning text-dark">
-                                <h5 class="mb-0">
-                                    <i class="bi bi-robot"></i>
-                                    AI Response ({{ session.ai_position }})
-                                </h5>
+                                <h5 class="mb-0"><i class="bi bi-robot"></i> AI Response ({{ session.ai_position }})</h5>
                             </div>
                             <div class="card-body">
                                 <p style="white-space: pre-line;">{{ session.ai_response }}</p>
@@ -48,38 +46,33 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="mt-4 d-flex gap-2">
                     <a href="{{ url_for('ai_practice') }}" class="btn btn-primary">
-                        <i class="bi bi-arrow-clockwise"></i>
-                        Practice Again
+                        <i class="bi bi-arrow-clockwise"></i> Practice Again
                     </a>
                     <a href="{{ url_for('practice_history') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-clock-history"></i>
-                        View History
+                        <i class="bi bi-clock-history"></i> View History
                     </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="card mt-3">
             <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="bi bi-lightbulb"></i>
-                    Analysis & Next Steps
-                </h5>
+                <h5 class="mb-0"><i class="bi bi-lightbulb"></i> Analysis & Next Steps</h5>
             </div>
             <div class="card-body">
-                <p><strong>Great work!</strong> Here are some ways to improve your argumentation:</p>
+                <p><strong>Great work!</strong> Here are some tips to refine your debating:</p>
                 <ul>
-                    <li>Consider how you might address the AI's counter-arguments</li>
-                    <li>Think about additional evidence that could strengthen your position</li>
-                    <li>Practice flowing (taking notes) during the exchange</li>
-                    <li>Try taking the opposite position next time to understand both sides</li>
+                    <li>Counter the AI's arguments with deeper reasoning or new evidence</li>
+                    <li>Anticipate likely rebuttals from your opponent's side</li>
+                    <li>Practice both Pro and Con to increase your adaptability</li>
+                    <li>Refine your structure: claim → warrant → impact</li>
                 </ul>
                 <div class="alert alert-success">
-                    <i class="bi bi-trophy"></i>
-                    <strong>Pro Tip:</strong> Save strong arguments from these practice sessions for real debates!
+                    <i class="bi bi-trophy"></i> 
+                    <strong>Pro Tip:</strong> Save your best cases in a prep document for tournament season.
                 </div>
             </div>
         </div>
