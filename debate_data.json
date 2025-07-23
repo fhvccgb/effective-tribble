@@ -26,7 +26,9 @@
     "player_profiles_enabled": true,
     "team_stats_enabled": true,
     "fun_facts_enabled": true,
-    "achievements_enabled": true
+    "achievements_enabled": true,
+    "ai_practice_enabled": true,
+    "ai_motivation_enabled": true
   },
   "site_content": {
     "title": "Capital High School Debate System",
