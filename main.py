@@ -19,87 +19,42 @@ app.secret_key = "your_secret_key"
 LOG_FILE = 'admin_log.txt'
 
 def load_data():
-    """Load data with backup mechanism"""
-    try:
-        with open("debate_data.json", "r") as f:
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, 'r') as f:
             data = json.load(f)
-        return data
-    except FileNotFoundError:
-        print("Data file not found, creating new one...")
-    except json.JSONDecodeError as e:
-        print(f"JSON decode error: {e}")
-        # Try to load backup
-        try:
-            with open("debate_data_backup.json", "r") as f:
-                print("Loading from backup file...")
-                return json.load(f)
-        except:
-            print("Backup file also corrupted or missing")
-    except Exception as e:
-        print(f"Error loading data: {e}")
-    
-    # Return default structure
-    return {
-        "users": {},
-        "players": {},
-        "teams": {},
-        "matches": [],
-        "banned_users": {},
-        "settings": {
-            "forum_enabled": True,
-            "hide_elo": False,
-            "hide_records": False,
-            "registration_enabled": True,
-            "require_approval": False
-        },
-        "feature_toggles": {
-            "match_history_visible": True,
-            "player_profiles_enabled": True,
-            "team_stats_enabled": True,
-            "fun_facts_enabled": True,
-            "achievements_enabled": True
-        },
-        "site_content": {
-            "title": "Capital High School Debate System",
-            "subtitle": "Welcome to the debate club portal!"
-        },
-        "forum_posts": [],
-        "stories": [],
-        "rubrics": {},
-        "fun_content": {
-            "club_achievements": [],
-            "fun_facts": []
-        }
-    }
+    else:
+        data = {}
 
-def save_data(data):
-    """Save data with backup mechanism and atomic writes"""
-    try:
-        # Create backup before saving
-        if os.path.exists("debate_data.json"):
-            try:
-                with open("debate_data.json", "r") as f:
-                    backup_data = f.read()
-                with open("debate_data_backup.json", "w") as f:
-                    f.write(backup_data)
-            except:
-                pass  # Backup failed, continue with save
-        
-        # Atomic write: write to temp file first, then rename
-        temp_file = "debate_data_temp.json"
-        with open(temp_file, "w") as f:
-            json.dump(data, f, indent=2)
-        
-        # Replace original with temp file (atomic on most systems)
-        if os.path.exists("debate_data.json"):
-            os.remove("debate_data.json")
-        os.rename(temp_file, "debate_data.json")
-        
-    except Exception as e:
-        print(f"Error saving data: {e}")
-        # Clean up temp file if it exists
-        if os.path.exists("debate_data_temp.json"):
-            os.remove("debate_data_temp.json")
+    # Initialize default keys if missing
+    data.setdefault("users", [])
+    data.setdefault("players", [])
+    data.setdefault("teams", [])
+    data.setdefault("matches", [])
+    data.setdefault("stories", [])
+    data.setdefault("rubrics", [])
+    data.setdefault("feature_toggles", {})
+    data.setdefault("settings", {})
+    data.setdefault("fun_content", {})
+
+    # Feature Toggles (set defaults)
+    ft = data["feature_toggles"]
+    ft.setdefault("match_history_visible", True)
+    ft.setdefault("player_profiles_enabled", True)
+    ft.setdefault("team_stats_enabled", True)
+    ft.setdefault("fun_facts_enabled", True)
+    ft.setdefault("achievements_enabled", True)
+    ft.setdefault("ai_practice_enabled", True)
+    ft.setdefault("ai_motivation_enabled", True)
+
+    # Settings (set defaults)
+    s = data["settings"]
+    s.setdefault("forum_enabled", True)
+    s.setdefault("hide_elo", False)
+    s.setdefault("hide_records", False)
+    s.setdefault("registration_enabled", True)
+    s.setdefault("require_approval", False)
+
+    return data
 
 def hash_password(password):
     salt = secrets.token_hex(16)
@@ -581,32 +536,34 @@ def unban_user(user_id):
         flash('User unbanned!', 'success')
     return redirect(url_for('user_management'))
 
-@app.route('/admin_settings', methods=['GET', 'POST', 'HEAD'])
+@app.route('/admin_settings', methods=['GET', 'POST'])
+@requires_admin
 def admin_settings():
-    if not requires_admin():
-        flash('Admin access required!', 'error')
-        return redirect(url_for('login'))
     data = load_data()
+
     if request.method == 'POST':
-        toggles = [
-            'match_history_visible',
-            'player_profiles_enabled',
-            'team_stats_enabled',
-            'fun_facts_enabled',
-            'achievements_enabled'
-        ]
-        if 'feature_toggles' not in data:
-            data['feature_toggles'] = {}
-        for toggle in toggles:
-            data['feature_toggles'][toggle] = toggle in request.form
-        data['settings']['forum_enabled'] = 'forum_enabled' in request.form
-        data['settings']['hide_elo'] = 'hide_elo' in request.form
-        data['settings']['hide_records'] = 'hide_records' in request.form
-        data['settings']['registration_enabled'] = 'registration_enabled' in request.form
-        data['settings']['require_approval'] = 'require_approval' in request.form
+        # Handle Feature Toggles
+        toggles = data.setdefault("feature_toggles", {})
+        toggles["match_history_visible"] = "match_history_visible" in request.form
+        toggles["player_profiles_enabled"] = "player_profiles_enabled" in request.form
+        toggles["team_stats_enabled"] = "team_stats_enabled" in request.form
+        toggles["fun_facts_enabled"] = "fun_facts_enabled" in request.form
+        toggles["achievements_enabled"] = "achievements_enabled" in request.form
+        toggles["ai_practice_enabled"] = "ai_practice_enabled" in request.form
+        toggles["ai_motivation_enabled"] = "ai_motivation_enabled" in request.form
+
+        # Handle Core Settings
+        settings = data.setdefault("settings", {})
+        settings["forum_enabled"] = "forum_enabled" in request.form
+        settings["hide_elo"] = "hide_elo" in request.form
+        settings["hide_records"] = "hide_records" in request.form
+        settings["registration_enabled"] = "registration_enabled" in request.form
+        settings["require_approval"] = "require_approval" in request.form
+
         save_data(data)
-        flash('Settings updated!', 'success')
+        flash("Admin settings updated successfully.", "success")
         return redirect(url_for('admin_settings'))
+
     return render_template('admin_settings.html', data=data)
 
 @app.route('/create_match_layout', methods=['GET', 'POST'])
