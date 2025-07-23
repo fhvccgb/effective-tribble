@@ -64,8 +64,8 @@
 
 <script>
 // Data from Flask
-const teams = {{ teams|tojson }};
-const players = {{ players|tojson }};
+const teams = {{ data.teams | default({}) | tojson }};
+const players = {{ data.players | default({}) | tojson }};
 
 function updateCompetitors() {
     const format = document.getElementById('format').value;
