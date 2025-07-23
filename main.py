@@ -800,7 +800,15 @@ def record_match():
         save_data(data)
         flash('Match recorded successfully!', 'success')
         return redirect(url_for('index'))
-    return render_template('record_match.html', data=data)
+    return render_template('record_match.html',
+        data=data,
+        teams=data.get('teams', {}),
+        players=data.get('players', {}),
+        is_logged_in=requires_login(),
+        is_admin=requires_admin(),
+        current_user=get_current_user(),
+        site_content=data.get('site_content', {})
+    )
 @app.route('/edit_website', methods=['GET', 'POST'])
 def edit_website():
     if not requires_admin():
