@@ -60,6 +60,18 @@
                             </div>
                         </div>
 
+                        <!-- NEW: Fun Facts -->
+                        <div class="mb-3">
+                            <label for="fun_facts" class="form-label">Fun Facts (one per line)</label>
+                            <textarea class="form-control" id="fun_facts" name="fun_facts" rows="4">{{ fun_content.fun_facts | join('\n') if fun_content and fun_content.fun_facts else '' }}</textarea>
+                        </div>
+
+                        <!-- NEW: Achievements -->
+                        <div class="mb-3">
+                            <label for="club_achievements" class="form-label">Club Achievements (one per line)</label>
+                            <textarea class="form-control" id="club_achievements" name="club_achievements" rows="4">{{ fun_content.club_achievements | join('\n') if fun_content and fun_content.club_achievements else '' }}</textarea>
+                        </div>
+
                         <div class="alert alert-info">
                             <i class="bi bi-info-circle"></i> 
                             Changes will be visible immediately across the entire website.
