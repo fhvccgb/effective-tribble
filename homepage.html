@@ -160,15 +160,22 @@
                         <i class="bi bi-chat-dots"></i> Discussion Forum
                     </a>
                     {% endif %}
-                    <a href="{{ url_for('stories') }}" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-newspaper"></i> Latest News
+            
+                    {% if data.get('feature_toggles', {}).get('ai_practice_enabled', False) %}
+                    <a href="{{ url_for('ai_practice') }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-robot"></i> AI Practice Mode
                     </a>
-                    <a href="{{ url_for('rubrics') }}" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-clipboard-check"></i> Rubrics
-                    </a>
-                </div>
-            </div>
-        </div>
+                    {% endif %}
+
+                     <a href="{{ url_for('stories') }}" class="btn btn-outline-secondary btn-sm">
+                         <i class="bi bi-newspaper"></i> Latest News
+                     </a>
+                     <a href="{{ url_for('rubrics') }}" class="btn btn-outline-secondary btn-sm">
+                         <i class="bi bi-clipboard-check"></i> Rubrics
+                     </a>
+                 </div>
+             </div>
+         </div>
 
         <!-- User Info -->
         {% if is_logged_in and current_user %}
