@@ -1,0 +1,42 @@
+{
+  "users": {
+    "7f8f4c069d673416704bab9d23aac848": {
+      "username": "admin",
+      "email": "admin@school.edu",
+      "password": "789b1b2f234514a63e841234876685b2:540f727050e16418463c0cf9f12363aa2965d073cf3e46b417a7bbeefaeb40b3",
+      "player_name": "Administrator",
+      "is_admin": true,
+      "created_date": "2025-07-22T23:34:09.080343",
+      "approved": true
+    }
+  },
+  "players": {},
+  "teams": {},
+  "matches": [],
+  "banned_users": {},
+  "settings": {
+    "forum_enabled": true,
+    "hide_elo": false,
+    "hide_records": false,
+    "registration_enabled": true,
+    "require_approval": false
+  },
+  "feature_toggles": {
+    "match_history_visible": true,
+    "player_profiles_enabled": true,
+    "team_stats_enabled": true,
+    "fun_facts_enabled": true,
+    "achievements_enabled": true
+  },
+  "site_content": {
+    "title": "Capital High School Debate System",
+    "subtitle": "Welcome to the debate club portal!"
+  },
+  "forum_posts": [],
+  "stories": [],
+  "rubrics": {},
+  "fun_content": {
+    "club_achievements": [],
+    "fun_facts": []
+  }
+}

@@ -1,0 +1,8 @@
+Flask
+gunicorn
+openai
+python-dotenv
+PyMySQL
+cryptography
+flask
+pymysql

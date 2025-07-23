@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Admin Settings{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0"><i class="bi bi-gear"></i> Admin Settings</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="match_history_visible" name="match_history_visible"
+                                           {% if data.feature_toggles.get('match_history_visible', True) %}checked{% endif %}>
+                                    <label class="form-check-label" for="match_history_visible">
+                                        <i class="bi bi-clock-history"></i> Match History
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="player_profiles_enabled" name="player_profiles_enabled"
+                                           {% if data.feature_toggles.get('player_profiles_enabled', True) %}checked{% endif %}>
+                                    <label class="form-check-label" for="player_profiles_enabled">
+                                        <i class="bi bi-person-badge"></i> Player Profiles
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="team_stats_enabled" name="team_stats_enabled"
+                                           {% if data.feature_toggles.get('team_stats_enabled', True) %}checked{% endif %}>
+                                    <label class="form-check-label" for="team_stats_enabled">
+                                        <i class="bi bi-bar-chart"></i> Team Statistics
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="fun_facts_enabled" name="fun_facts_enabled"
+                                           {% if data.feature_toggles.get('fun_facts_enabled', True) %}checked{% endif %}>
+                                    <label class="form-check-label" for="fun_facts_enabled">
+                                        <i class="bi bi-lightbulb"></i> Fun Facts
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="achievements_enabled" name="achievements_enabled"
+                                           {% if data.feature_toggles.get('achievements_enabled', True) %}checked{% endif %}>
+                                    <label class="form-check-label" for="achievements_enabled">
+                                        <i class="bi bi-award"></i> Club Achievements
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="ai_practice_enabled" name="ai_practice_enabled"
+                                           {% if data.feature_toggles.get('ai_practice_enabled', True) %}checked{% endif %}>
+                                    <label class="form-check-label" for="ai_practice_enabled">
+                                        <i class="bi bi-robot"></i> AI Practice Mode
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="ai_motivation_enabled" name="ai_motivation_enabled"
+                                           {% if data.feature_toggles.get('ai_motivation_enabled', True) %}checked{% endif %}>
+                                    <label class="form-check-label" for="ai_motivation_enabled">
+                                        <i class="bi bi-heart"></i> AI Motivation System
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="forum_enabled" name="forum_enabled"
+                                   {% if data.settings.get('forum_enabled', True) %}checked{% endif %}>
+                            <label class="form-check-label" for="forum_enabled">
+                                <i class="bi bi-chat"></i> Forum Enabled
+                            </label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="hide_elo" name="hide_elo"
+                                   {% if data.settings.get('hide_elo', False) %}checked{% endif %}>
+                            <label class="form-check-label" for="hide_elo">
+                                <i class="bi bi-eye-slash"></i> Hide Elo Ratings
+                            </label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="hide_records" name="hide_records"
+                                   {% if data.settings.get('hide_records', False) %}checked{% endif %}>
+                            <label class="form-check-label" for="hide_records">
+                                <i class="bi bi-eye-slash"></i> Hide Match Records
+                            </label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="registration_enabled" name="registration_enabled"
+                                   {% if data.settings.get('registration_enabled', True) %}checked{% endif %}>
+                            <label class="form-check-label" for="registration_enabled">
+                                <i class="bi bi-person-plus"></i> Registration Enabled
+                            </label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="require_approval" name="require_approval"
+                                   {% if data.settings.get('require_approval', False) %}checked{% endif %}>
+                            <label class="form-check-label" for="require_approval">
+                                <i class="bi bi-check2-circle"></i> Require Approval
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Save Settings</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
